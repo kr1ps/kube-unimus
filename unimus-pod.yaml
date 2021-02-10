@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unimus-pod
+  labels:
+    name: unimus-pod
+    app: unimus
+spec:
+  containers:
+    - name: unimus
+      image: croc/unimus
+      ports:
+        - name: http
+          containerPort: 8085
+          protocol: TCP
+      env:
+        - name: XMX
+          value: "1024M"
+        - name: XMS
+          value: "256M"
+        - name: TZ
+          value: "America/Santo_Domingo"
+      # envFrom:
+      #   - configMapRef:
+      #       name: pgadmin-config
+      volumeMounts:
+        - name: unimus-data
+          mountPath: /etc/unimus
+          #subPath: postgres
+  volumes:
+  - name: unimus-data
+    persistentVolumeClaim:
+      claimName: unimus-pv-claim

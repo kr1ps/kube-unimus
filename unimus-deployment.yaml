@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unimus-deploy
+  labels:
+    name: unimus-deploy
+    app: unimus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: unimus-pod
+      app: unimus
+
+  template:
+    metadata:
+      name: unimus-pod
+      labels:
+        name: unimus-pod
+        app: unimus
+    spec:
+      containers:
+        - name: unimus
+          image: croc/unimus
+          ports:
+            - name: http
+              containerPort: 8085
+              protocol: TCP
+          env:
+            - name: XMX
+              value: "1024M"
+            - name: XMS
+              value: "256M"
+            - name: TZ
+              value: "America/Santo_Domingo"
+          # envFrom:
+          #   - configMapRef:
+          #       name: pgadmin-config
+          volumeMounts:
+            - name: unimus-data
+              mountPath: /etc/unimus
+              #subPath: postgres
+      volumes:
+      - name: unimus-data
+        persistentVolumeClaim:
+          claimName: unimus-pv-claim

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: unimus-service
+  labels:
+    name: unimus-service
+    app: unimus
+spec:
+  ports:
+  - port: 8085
+    targetPort: 8085
+    name: unimus-http
+  type: LoadBalancer
+  loadBalancerIP: 172.18.0.85
+  selector:
+    name: unimus-pod
+    app: unimus
