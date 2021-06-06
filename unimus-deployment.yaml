@@ -40,6 +40,8 @@ spec:
             - name: unimus-data
               mountPath: /etc/unimus
               #subPath: postgres
+      nodeSelector:
+        nodename: srvutil
       volumes:
       - name: unimus-data
         persistentVolumeClaim:
